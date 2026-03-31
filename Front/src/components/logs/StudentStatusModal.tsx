@@ -207,16 +207,16 @@ export function StudentStatusModal({ open, onOpenChange, status, statusLabel }: 
             </DialogDescription>
           </DialogHeader>
           {isLoading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center px-6 py-12">
               <p className="text-sm text-muted-foreground">데이터를 불러오는 중입니다...</p>
             </div>
           ) : students.length === 0 ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center px-6 py-12">
               <p className="text-sm text-muted-foreground">해당 상태의 학생이 없습니다.</p>
             </div>
           ) : (
-            <ScrollArea className="h-[60vh] pr-4">
-              <div className="space-y-3">
+            <ScrollArea className="h-[60vh]">
+              <div className="px-6 pb-6 space-y-3">
                 {students.map((student) => (
                   <div
                     key={student.id}
