@@ -39,7 +39,7 @@ export function StudentActionModal({ open, onOpenChange, student, onSelectDM, on
             {student.zep_name}님에 대한 작업을 선택하세요.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-3 py-4">
+        <div className="space-y-3 px-6 pb-6">
           <Button
             variant="outline"
             className="w-full justify-start"
