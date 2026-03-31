@@ -11,7 +11,7 @@ const links = [
 export function Sidebar() {
   return (
     <aside className="glass-panel flex h-full w-64 flex-col border border-border/60 p-4">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
         {links.map((link) => (
           <NavLink
             key={link.to}

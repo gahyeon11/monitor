@@ -21,15 +21,82 @@ ZEP → Slack → Python (Socket Mode) → Discord DM
 
 ## 🚀 빠른 시작
 
-### 1. 환경 설정
+### Oracle Cloud (서버 배포)
 
+> Oracle Cloud Free Tier VM에 Docker로 배포하는 방법입니다.
+
+**1. VM 생성**
+- [oracle.com/cloud/free](https://oracle.com/cloud/free) 가입
+- Compute → Instances → Create instance
+  - Image: Canonical Ubuntu 22.04
+  - Shape: VM.Standard.E2.1.Micro (Always Free)
+  - SSH keys: "Generate a key pair for me" 선택 후 Private Key 다운로드
+- Networking → Primary VNIC: Public IPv4 address 자동 할당 확인
+
+**2. 방화벽 설정**
+
+Oracle Cloud 콘솔에서:
+- Networking → VCN → Subnet → Security Lists → Default Security List
+- Add Ingress Rules: Source CIDR `0.0.0.0/0`, Protocol TCP, Destination Port `80`
+
+VM 터미널에서:
 ```bash
-# .env 파일 생성 및 설정
-cp .env.example .env
-nano .env  # Discord/Slack 토큰 입력
+sudo iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -I INPUT -p tcp --dport 8000 -j ACCEPT
+sudo netfilter-persistent save
 ```
 
-### 2. Docker로 실행 (권장)
+**3. Docker 설치 및 실행**
+
+```bash
+sudo apt update && sudo apt install -y docker.io docker-compose
+sudo usermod -aG docker $USER
+newgrp docker
+
+git clone https://github.com/gahyeon11/monitor.git
+cd monitor
+
+# .env 파일 생성
+nano Back/.env  # 아래 환경 변수 설정
+
+docker-compose up -d --build
+```
+
+**4. 접속**
+- 웹 대시보드: `http://[서버IP]`
+
+---
+
+### 처음 사용 설정 (대시보드에서)
+
+서버 배포 후 `.env` 없이 **대시보드 설정 페이지**에서 모든 토큰을 입력할 수 있습니다.
+
+1. `http://[서버IP]` 접속
+2. 설정 페이지 → **연동 토큰 설정** → 표시 버튼 클릭
+3. 아래 값 입력 후 저장:
+
+| 항목 | 설명 | 발급 위치 |
+|------|------|-----------|
+| Discord Bot Token | 봇 토큰 | [Discord Developer Portal](https://discord.com/developers/applications) → Bot 탭 |
+| Discord Server ID | 서버 ID | Discord 서버 우클릭 → ID 복사 (개발자 모드 활성화 필요) |
+| Slack Bot Token | xoxb-... | Slack App → OAuth & Permissions → Bot User OAuth Token |
+| Slack App Token | xapp-... | Slack App → Basic Information → App-Level Tokens |
+| Slack Channel ID | C... | 채널 우클릭 → 채널 세부정보 보기 → 채널 ID |
+
+4. 저장 후 학생 페이지 → **디스코드 동기화**로 학생 목록 불러오기
+
+---
+
+### 로컬 개발 환경
+
+**1. 환경 설정**
+
+```bash
+cp Back/.env.example Back/.env
+nano Back/.env  # Discord/Slack 토큰 입력
+```
+
+**2. Docker로 실행 (권장)**
 
 ```bash
 docker-compose up -d
@@ -96,19 +163,22 @@ zep_name,discord_id
 
 ## 🔧 환경 변수
 
-필수 설정은 `.env` 파일에서 관리하고, 나머지는 웹 대시보드에서 설정합니다.
+모든 토큰은 **웹 대시보드 설정 페이지**에서 입력 가능합니다. `.env` 파일은 초기 실행 시에만 필요합니다.
 
-**`.env` 파일 (필수):**
+**`.env` 파일 (최소 설정):**
 
-- `DISCORD_BOT_TOKEN`: Discord Bot 토큰
-- `SLACK_BOT_TOKEN`, `SLACK_APP_TOKEN`, `SLACK_CHANNEL_ID`: Slack 연동 정보
-- `DATABASE_URL`: 데이터베이스 경로
+```env
+DATABASE_URL=sqlite+aiosqlite:///data/students.db
+```
 
-**웹 대시보드에서 설정:**
+**웹 대시보드에서 설정 가능한 항목:**
 
-- 관리자 계정
+- Discord Bot Token, Server ID
+- Slack Bot Token, App Token, Channel ID
+- Google Sheets URL
 - 모니터링 임계값 (카메라 OFF, 퇴장 알림 시간)
 - 수업 시간 (시작/종료/점심/초기화 시간)
+- 관리자 계정
 
 ## 📁 주요 파일
 

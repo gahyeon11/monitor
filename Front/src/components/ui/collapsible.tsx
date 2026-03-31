@@ -77,7 +77,7 @@ export function CollapsibleContent({ children, isOpen }: CollapsibleContentProps
         overflow: isOpen ? 'visible' : 'hidden'
       }}
     >
-      <div className="px-4 pb-4 space-y-4">
+      <div className="p-4 space-y-4">
         {children}
       </div>
     </div>
