@@ -69,7 +69,7 @@ export function SendDMModal({ open, onOpenChange, student, onBack }: SendDMModal
             {student.zep_name}님에게 DM을 전송합니다.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-3 py-4">
+        <div className="space-y-3 px-6 pb-6">
           <Button
             variant="outline"
             className="w-full justify-start"

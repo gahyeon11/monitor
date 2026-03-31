@@ -91,29 +91,27 @@ export function StudentLogModal({ open, onOpenChange, student, onBack }: Student
             </div>
           </div>
         </DialogHeader>
-        <ScrollArea className="h-[500px] pr-4">
+        <ScrollArea className="h-[500px]">
           {studentLogs.length === 0 ? (
-            <div className="text-center text-muted-foreground py-8">
+            <div className="flex items-center justify-center px-6 py-8 text-sm text-muted-foreground">
               로그 기록이 없습니다.
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="px-6 pb-6 space-y-2">
               {studentLogs.map((log) => (
                 <div
                   key={log.id}
-                  className="flex items-start justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                  className="rounded-lg border border-border/60 p-4 space-y-1.5 hover:bg-muted/50 transition-colors"
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge variant={getEventTypeBadgeVariant(log.event_type)}>
-                        {getEventTypeLabel(log.event_type)}
-                      </Badge>
-                      <span className="text-sm text-muted-foreground">
-                        {formatKoreanTime(new Date(log.timestamp))}
-                      </span>
-                    </div>
-                    <p className="text-sm">{log.message}</p>
+                  <div className="flex items-center justify-between">
+                    <Badge variant={getEventTypeBadgeVariant(log.event_type)}>
+                      {getEventTypeLabel(log.event_type)}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">
+                      {formatKoreanTime(new Date(log.timestamp))}
+                    </span>
                   </div>
+                  <p className="text-sm text-foreground">{log.message}</p>
                 </div>
               ))}
             </div>

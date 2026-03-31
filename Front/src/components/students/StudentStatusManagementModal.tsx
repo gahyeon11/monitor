@@ -115,7 +115,7 @@ export function StudentStatusManagementModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 py-4">
+        <div className="space-y-6 px-6 pb-6">
           {/* 현재 상태 표시 */}
           <div className="rounded-lg border p-4 bg-muted/50">
             <div className="flex items-center justify-between">
